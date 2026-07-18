@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Exam Pattern Analyzer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand">
+    <span class="brand-mark">
+      <span class="brand-highlight" aria-hidden="true"></span>
+      <span class="brand-text">Exam Pattern Analyzer</span>
+    </span>
+    <p class="brand-tagline">Upload old papers. Find what keeps coming back.</p>
+  </div>
+</header>
+
+<main class="layout">
+
+  <!-- LEFT: upload / binder panel -->
+  <section class="panel upload-panel" aria-label="Upload exam papers">
+    <h2 class="panel-title"><span class="panel-index">01</span> Add your papers</h2>
+
+    <div id="dropzone" class="dropzone">
+      <input type="file" id="fileInput" multiple accept=".pdf,.docx,.txt,.jpg,.jpeg,.png" hidden />
+      <p class="dropzone-headline">Drag files here, or <button type="button" id="browseBtn" class="link-btn">browse</button></p>
+      <p class="dropzone-sub">PDF · DOCX · TXT · JPG · PNG — one file per exam paper</p>
+    </div>
+
+    <ul id="fileList" class="file-list" aria-live="polite"></ul>
+
+    <button id="analyzeBtn" class="primary-btn" disabled>Analyze papers</button>
+    <p id="hint" class="hint">Add at least 3 different years for reliable predictions.</p>
+
+    <div id="errorBanner" class="error-banner" hidden></div>
+  </section>
+
+  <!-- RIGHT: results panel -->
+  <section class="panel results-panel" aria-label="Analysis results">
+
+    <nav class="tabs" id="tabs">
+      <button class="tab-btn active" data-tab="high">🔴 High</button>
+      <button class="tab-btn" data-tab="medium">🟡 Medium</button>
+      <button class="tab-btn" data-tab="low">⚪ Low</button>
+      <button class="tab-btn" data-tab="topics">📚 Topics</button>
+      <button class="tab-btn" data-tab="prediction">🔮 Prediction</button>
+    </nav>
+
+    <div class="tab-actions">
+      <button id="exportCsvBtn" class="ghost-btn" disabled>Export CSV</button>
+      <button id="printBtn" class="ghost-btn" disabled>Save as PDF</button>
+    </div>
+
+    <div id="loading" class="loading-state" hidden>
+      <div class="spinner" aria-hidden="true"></div>
+      <p>Reading papers and looking for patterns…</p>
+    </div>
+
+    <div id="emptyState" class="empty-state">
+      <p class="empty-headline">Nothing analyzed yet</p>
+      <p class="empty-sub">Add your previous papers on the left and hit <strong>Analyze papers</strong> to see repeated questions here.</p>
+    </div>
+
+    <div id="resultsContent" class="results-content" hidden>
+      <div class="tab-panel" data-panel="high"><ul id="list-high" class="question-list"></ul></div>
+      <div class="tab-panel" data-panel="medium" hidden><ul id="list-medium" class="question-list"></ul></div>
+      <div class="tab-panel" data-panel="low" hidden><ul id="list-low" class="question-list"></ul></div>
+      <div class="tab-panel" data-panel="topics" hidden><ul id="list-topics" class="topic-list"></ul></div>
+      <div class="tab-panel" data-panel="prediction" hidden><ol id="list-prediction" class="prediction-list"></ol></div>
+    </div>
+
+    <div id="notesBlock" class="notes-block" hidden>
+      <h3>Notes</h3>
+      <ul id="list-notes"></ul>
+    </div>
+
+    <!-- print-only: all sections stacked -->
+    <div id="printContent" class="print-only"></div>
+
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>Runs locally. Your papers are sent only to the Anthropic API for analysis.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
